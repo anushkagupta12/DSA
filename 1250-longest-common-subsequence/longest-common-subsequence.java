@@ -1,51 +1,43 @@
 class Solution {
-
-    private int fun(String X, String Y, int n, int m, int dp[][]) {
-        // if (n == 0 || m == 0) {
+    private int helper(String X, String Y, int m, int n, int dp[][]) {
+        // if(m == 0 || n == 0) {
         //     return 0;
         // }
-        for(int i = 0; i < n; i++) {
+        for(int i = 0; i <= m; i++) {
             dp[i][0] = 0;
         }
-        for(int i = 0; i < m; i++) {
+        for(int i = 0; i <= n; i++) {
             dp[0][i] = 0;
         }
-
-        if (dp[n][m] != -1) { // Check if already computed
-            return dp[n][m];
-        }
-
-        // if (X.charAt(n - 1) == Y.charAt(m - 1)) {
-        //     dp[n][m] = 1 + fun(X, Y, n - 1, m - 1, dp); // 1 is added for the matched char
-        // } else {
-        //     dp[n][m] = Math.max(fun(X, Y, n, m - 1, dp), fun(X, Y, n - 1, m, dp));
-        // }
-
-        for(int i = 1; i <= n; i++) {
-            for(int j = 1; j <= m; j++) {
+        for(int i = 1; i <= m; i++) {
+            for(int j = 1; j <= n; j++) {
                 if(X.charAt(i - 1) == Y.charAt(j - 1)) {
                     dp[i][j] = 1 + dp[i-1][j-1];
                 } else {
-                    dp[i][j] = Math.max(dp[i][j-1], dp[i - 1][j]);
+                    dp[i][j] = Math.max(dp[i][j-1], dp[i-1][j]); 
                 }
-
             }
         }
-        return dp[n][m] ;
+        return dp[m][n];
+        // if(dp[m][n] != -1) {
+        //     return dp[m][n];
+        // }
+        // if(X.charAt(m - 1) == Y.charAt(n - 1)) {
+        //      return 1 + helper(X,Y, m - 1, n - 1,dp); 
+        // } 
+        // return Math.max(helper(X, Y, m - 1, n,dp) , helper(X,Y, m, n - 1,dp));
     }
-
     public int longestCommonSubsequence(String text1, String text2) {
-
-        int n = text1.length();
-        int m = text2.length();
-        int dp[][] = new int[n + 1][m + 1];
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= m; j++) {
+        int m = text1.length(), n = text2.length();
+        int dp[][] = new int[m+1][n+1];
+        for(int i = 0; i <= m; i++) {
+            for(int j = 0; j <= n; j++) {
                 dp[i][j] = -1;
             }
         }
 
-        int ans = fun(text1, text2, n, m, dp);
-        return ans;
+        return helper(text1, text2, m,n, dp);
+
+        // return ans;
     }
 }
